@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Dashbaord Duty : {{ service.name }}</title>
+
+    <link href="../static/img/favicon.ico" rel="icon">
+    <link href="../static/css/vendor/bootstrap.min.css" rel="stylesheet">
+    <link href="../static/css/flat-ui.min.css" rel="stylesheet">
+
+    <script src="../static/js/vendor/jquery.min.js"></script>
+    <script src="../static/js/flat-ui.min.js"></script>
+
+    <style type="text/css">
+        .square {
+            float:left;
+            position: relative;
+            width: 30%;
+            margin:1.66%;
+            overflow:hidden;
+        }
+        .numbers{
+            font-weight:900;
+            font-size:150px;
+        }
+    </style>
+</head>
+
+<div class="page-header text-center">
+    <h1>{{ service.name }}</h1>
+</div>
+
+
+<div class="row">
+    <div class="col-md-4 text-center h4">
+        <a href="{{ service.html_url }}?status=triggered">Triggered</a>
+    </div>
+    <div class="col-md-4 text-center h4">
+        <a href="{{ service.html_url }}?status=acknowledged">Acknowledged</a>
+    </div>
+    <div class="col-md-4 text-center h4">
+        <a href="{{ service.html_url }}?status=resolved">Resolved</a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4 text-center square numbers" data-toggle="modal" data-target="#triggeredModal">
+        {{ incidents.triggered.count }}
+    </div>
+    <div class="col-md-4 text-center square numbers" data-toggle="modal" data-target="#acknowledgedModal">
+        {{ incidents.acknowledged.count }}
+    </div>
+    <div class="col-md-4 text-center square numbers" data-toggle="modal" data-target="#resolvedModal">
+        {{ incidents.resolved.count }}
+    </div>
+</div>
+
+<div class="modal fade" id="triggeredModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                {% for i in incidents.triggered.details %}
+                {{ i }}<br/>
+                {% endfor %}
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="acknowledgedModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                {% for i in incidents.acknowledged.details %}
+                {{ i }}<br/>
+                {% endfor %}
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="resolvedModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                {% for i in incidents.resolved.details %}
+                {{ i }}<br/>
+                {% endfor %}
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-body text-center">
+        <a href="{{ oncall.user.html_url }}">Current on-call: {{ oncall.user.summary }}</a>
+    </div>
+</div>
