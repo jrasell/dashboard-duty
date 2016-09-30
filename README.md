@@ -3,7 +3,7 @@ Dashboard Duty
 
 Dashboard Duty is a simple PagerDuty dashboard designed to allow teams to keep a track of their alerts and who is currently first line on-call for their service.
 
-![Dashboard Duty UI](https://lh3.googleusercontent.com/2PZk-5oqVdL-J22I2Aco2dCSQXKlg_d3eYa4GAa8jqflswUIfR1g6NqEpqcipEBVxCyu20G5=w1280-h699-rw)
+![Dashboard Duty UI](https://s12.postimg.org/cjmkq6dv1/Screen_Shot_2016_09_30_at_12_38_23.png)
 
 Environment Variables
 ---------------------
