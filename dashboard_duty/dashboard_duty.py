@@ -6,7 +6,9 @@ class Core(object):
     def __init__(self, session, api_key, service_key):
         """
 
-        :return:
+        :param session: The Flask requests object used to connect to PD
+        :param api_key: The PD read-only, V2 API key
+        :param service_key: The PD service name which is interrogated
         """
 
         self._api_key = api_key
@@ -24,10 +26,12 @@ class Core(object):
 
     def _get_url(self, payload, endpoint):
         """
+        Performs a GET request to the requested PD API endpoint with the payload.
+        If a 200 response is received the response data is returned.
 
-        :param payload:
-        :param endpoint:
-        :return:
+        :param payload: The GET payload to send to the PD API
+        :param endpoint: The PagerDuty endpoint, appended to api.pagerduty.com
+        :return: The response data from the PD endpoint
         """
         url = 'https://api.pagerduty.com/%s' % endpoint
         try:
@@ -40,9 +44,12 @@ class Core(object):
 
     def incident(self, service_id):
         """
+        Details the number of currently active alerts in triggered and acknowledged state
+        Also details the number of resolved alerts over the past 24hrs
+        The alert summary is also included to allow for easy inspection
 
         :param service_id:
-        :return:
+        :return: The number of triggered, acknowledged and resolved alerts and the summary of each
         """
         payload = {
             'statuses[]': ['triggered', 'acknowledged', 'resolved'],
@@ -65,9 +72,11 @@ class Core(object):
 
     def oncall(self, schedule_id):
         """
+        Takes the escalation target ID of a service and calls the PD API.
+        This discovers information regarding the 1st line responder.
 
-        :param schedule_id:
-        :return:
+        :param schedule_id: The escalation_policy target of the PD service
+        :return: The details of the current oncall member
         """
         payload = {
             'time_zone': self.timezone,
@@ -78,8 +87,10 @@ class Core(object):
 
     def service(self):
         """
+        Takes the PD service name and calls the PD API for details of the service in question
 
-        :return:
+
+        :return: The PD service details aligned to the PD service name
         """
         payload = {
             'time_zone': self.timezone,
