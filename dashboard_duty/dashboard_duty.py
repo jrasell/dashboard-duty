@@ -26,7 +26,7 @@ class Core(object):
 
     def _get_url(self, payload, endpoint):
         """
-        Performs a GET request to the requested PD API endpoint with the payload.
+        Performs a GET request to the PD API endpoint with the payload.
         If a 200 response is received the response data is returned.
 
         :param payload: The GET payload to send to the PD API
@@ -37,19 +37,23 @@ class Core(object):
         try:
             r_data = self._s.get(url, params=payload)
             if r_data.status_code != 200:
-                logging.error('PagerDuty API returned a status code of %s' % r_data.status_code)
+                logging.error('PagerDuty API returned a status code of %s'
+                              % r_data.status_code)
             return r_data.json()
         except Exception, e:
             logging.error(e)
 
     def incident(self, service_id):
         """
-        Details the number of currently active alerts in triggered and acknowledged state
+        Details the number of currently active alerts in the
+        triggered and acknowledged state
+
         Also details the number of resolved alerts over the past 24hrs
         The alert summary is also included to allow for easy inspection
 
         :param service_id:
-        :return: The number of triggered, acknowledged and resolved alerts and the summary of each
+        :return: The number of triggered, acknowledged and resolve
+        alerts and the summary of each
         """
         payload = {
             'statuses[]': ['triggered', 'acknowledged', 'resolved'],
@@ -61,12 +65,12 @@ class Core(object):
         r = self._get_url(payload, 'incidents')['incidents']
 
         triggered = [i['summary'] for i in r if i['status'] == 'triggered']
-        acknowledged = [i['summary'] for i in r if i['status'] == 'acknowledged']
+        ack = [i['summary'] for i in r if i['status'] == 'acknowledged']
         resolved = [i['summary'] for i in r if i['status'] == 'resolved']
 
         out = dict()
         out['triggered'] = {'count': len(triggered), 'details': triggered}
-        out['acknowledged'] = {'count': len(acknowledged), 'details': acknowledged}
+        out['acknowledged'] = {'count': len(ack), 'details': ack}
         out['resolved'] = {'count': len(resolved), 'details': resolved}
         return out
 
@@ -87,7 +91,8 @@ class Core(object):
 
     def service(self):
         """
-        Takes the PD service name and calls the PD API for details of the service in question
+        Takes the PD service name and calls the PD API
+        for details of the service in question
 
 
         :return: The PD service details aligned to the PD service name
