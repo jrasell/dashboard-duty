@@ -22,7 +22,18 @@ def index():
 
     service = d_session.service()
     incidents = d_session.incident(service['id'])
-    oncall = d_session.oncall(service['escalation_policy']['escalation_rules'][0]['targets'][0]['id'])
+
+    if service['escalation_policy']['escalation_rules'][0]['targets'][0]['type'] == 'schedule_reference':
+        service_id = service['escalation_policy']['escalation_rules'][0]['targets'][0]['id']
+        oncall = d_session.oncall_schedule_policy(service_id)
+
+    elif service['escalation_policy']['escalation_rules'][0]['targets'][0]['type'] == 'user_reference':
+        username = service['escalation_policy']['escalation_rules'][0]['targets'][0]['summary']
+        oncall = d_session.oncall_user_policy(username)
+    else:
+        logging.error('Unable to handle oncall policy for %s' % service_key)
+        exit(1)
+
     return render_template('index.html', service=service, incidents=incidents, oncall=oncall)
 
 

@@ -74,7 +74,22 @@ class Core(object):
         out['resolved'] = {'count': len(resolved), 'details': resolved}
         return out
 
-    def oncall(self, schedule_id):
+    def oncall_user_policy(self, username):
+        """
+        If an escalation policy is user_reference this function is called
+        The queries the users API to find the oncall information
+
+        :param username: The PD username of the oncall person
+        :return: The PD user details
+        """
+        payload = {
+            'time_zone': self.timezone,
+            'query': username
+        }
+        r = self._get_url(payload, 'users')
+        return r['users'][0]
+
+    def oncall_schedule_policy(self, schedule_id):
         """
         Takes the escalation target ID of a service and calls the PD API.
         This discovers information regarding the 1st line responder.
@@ -87,13 +102,13 @@ class Core(object):
             'schedule_ids[]': schedule_id
         }
         r = self._get_url(payload, 'oncalls')
-        return r['oncalls'][0]
+        print "%s" % r['oncalls'][0]['user']
+        return r['oncalls'][0]['user']
 
     def service(self):
         """
         Takes the PD service name and calls the PD API
         for details of the service in question
-
 
         :return: The PD service details aligned to the PD service name
         """
