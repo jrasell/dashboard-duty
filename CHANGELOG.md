@@ -1,5 +1,8 @@
 ## 0.0.2 (Unreleased)
 
+BUG FIXES:
+ * Dashboard duty can now handle individual users as esclations on services [GH-2]
+
 IMPROVEMENTS:
  * Removed excess and unused static files
 
