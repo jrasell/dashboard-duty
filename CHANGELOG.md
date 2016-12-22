@@ -1,4 +1,4 @@
-## 0.0.2 (Unreleased)
+## 0.0.2 (22 December 2016)
 
 BUG FIXES:
  * Dashboard duty can now handle individual users as esclations on services [GH-2]
