@@ -54,11 +54,6 @@ $ export DASHBOARD_DUTY_KEY='<PD_API_Key>'
 $ python dashboard_duty/app.py
 ```
 
-Known Limitations
------------------
-
- * The escalation policy linked to the service currently needs to be a schedule and doesn't handle being an individual user.
-
 Contributing
 ------------
 
