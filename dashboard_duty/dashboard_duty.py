@@ -102,7 +102,6 @@ class Core(object):
             'schedule_ids[]': schedule_id
         }
         r = self._get_url(payload, 'oncalls')
-        print "%s" % r['oncalls'][0]['user']
         return r['oncalls'][0]['user']
 
     def service(self):
